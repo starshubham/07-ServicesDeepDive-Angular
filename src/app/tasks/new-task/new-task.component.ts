@@ -1,5 +1,6 @@
 import { Component, ElementRef, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { TasksService } from '../tasks.service';
 
 @Component({
   selector: 'app-new-task',
@@ -10,8 +11,17 @@ import { FormsModule } from '@angular/forms';
 })
 export class NewTaskComponent {
   private formEl = viewChild<ElementRef<HTMLFormElement>>('form');
+  // Longer way to inject the service, but it doesn't require @Injectable() decorator in the service class
+  // private tasksService: TasksService;
+  // constructor(tService: TasksService) {
+  //   this.tasksService = tService;
+  // }
+
+  // Shorter way to inject the service, but it requires @Injectable() decorator in the service class
+  constructor(private tasksService: TasksService) {}
 
   onAddTask(title: string, description: string) {
+    this.tasksService.addTask({ title, description });
     this.formEl()?.nativeElement.reset();
   }
 }
